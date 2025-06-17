@@ -1,7 +1,7 @@
 import { IPost } from './post.interface';
 
 export class Post implements IPost {
-  id: number;
+  id: string;
   title: string;
   content: string;
   image: string;

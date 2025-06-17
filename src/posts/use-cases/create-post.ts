@@ -1,12 +1,26 @@
+import { Inject } from '@nestjs/common';
 import { Post } from '../domain/post.entity';
 import { IPost } from '../domain/post.interface';
-import { IPostRepository } from '../domain/post.interface.repository';
+import { IPostsRepository } from '../domain/post.interface.repository';
+import { CreatePostDto } from '../dto/create-post.dto';
+import { randomUUID } from 'crypto';
 
 export class CreatePostUseCase {
-  constructor(private readonly postRepository: IPostRepository) {}
+  constructor(
+    @Inject('IPostsRepository')
+    private readonly postRepository: IPostsRepository,
+  ) {}
 
-  async execute(post: IPost): Promise<IPost> {
-    const newPost = new Post(post);
-    return this.postRepository.create(newPost);
+  async execute(dto: CreatePostDto): Promise<Post> {
+    const postProps = {
+      id: randomUUID(),
+      title: dto.title,
+      content: dto.content,
+      image: dto.image,
+    };
+    const post = new Post(postProps);
+
+    const created = await this.postRepository.create(post);
+    return created;
   }
 }
