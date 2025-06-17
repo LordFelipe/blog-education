@@ -1,11 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { CreatePostUseCase } from './use-cases/create-post';
+import { IPostsRepository } from './domain/post.interface.repository';
 
 @Injectable()
 export class PostsService {
+  constructor(
+    @Inject('IPostsRepository')
+    private readonly postRepository: IPostsRepository,
+  ) {}
   create(createPostDto: CreatePostDto) {
-    return 'This action adds a new post';
+    const usecase = new CreatePostUseCase(this.postRepository);
+    return usecase.execute(createPostDto);
   }
 
   findAll() {
