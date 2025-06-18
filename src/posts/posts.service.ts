@@ -1,33 +1,32 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-import { CreatePostUseCase } from './use-cases/create-post';
-import { IPostsRepository } from './domain/post.interface.repository';
+import { PostRepository } from './repository/post.repository';
 
 @Injectable()
 export class PostsService {
-  constructor(
-    @Inject('IPostsRepository')
-    private readonly postRepository: IPostsRepository,
-  ) {}
+  constructor(private readonly postRepository: PostRepository) {}
   create(createPostDto: CreatePostDto) {
-    const usecase = new CreatePostUseCase(this.postRepository);
-    return usecase.execute(createPostDto);
+    return this.postRepository.create(createPostDto);
   }
 
-  findAll() {
-    return `This action returns all posts`;
+  findAll(limit: number, page: number) {
+    return this.postRepository.findAll(limit, page);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} post`;
+  findAllPublished() {
+    return this.postRepository.findAllPublished();
   }
 
-  update(id: number, updatePostDto: UpdatePostDto) {
-    return `This action updates a #${id} post`;
+  findOne(id: string) {
+    return this.postRepository.findOne(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} post`;
+  update(id: string, updatePostDto: UpdatePostDto) {
+    return this.postRepository.update(id, updatePostDto);
+  }
+
+  remove(id: string) {
+    return this.postRepository.remove(id);
   }
 }

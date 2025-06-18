@@ -1,10 +1,19 @@
 import { Module } from '@nestjs/common';
 import { PostsService } from './posts.service';
-import { PublicPostsController } from './controllers/public.posts.controller';
-import { AdminPostsController } from './controllers/admin.posts.controller';
+import { PostsController } from './posts.controller';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Post, PostSchema } from './schemas/posts.schema';
+import { PostMongooseRepository } from './repository/mongoose/post.mongoose.repository';
+import { PostRepository } from './repository/post.repository';
 
 @Module({
-  controllers: [PublicPostsController, AdminPostsController],
-  providers: [PostsService],
+  imports: [
+    MongooseModule.forFeature([{ name: Post.name, schema: PostSchema }]),
+  ],
+  controllers: [PostsController],
+  providers: [
+    PostsService,
+    { provide: PostRepository, useClass: PostMongooseRepository },
+  ],
 })
 export class PostsModule {}
