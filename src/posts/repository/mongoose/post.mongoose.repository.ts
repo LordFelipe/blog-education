@@ -32,7 +32,16 @@ export class PostMongooseRepository implements PostRepository {
   async remove(id: string): Promise<void> {
     await this.postModel.deleteOne({ _id: id }).exec();
   }
-  search(term: string): Promise<IPost[]> {
-    throw new Error('Method not implemented.');
+  async search(term: string): Promise<IPost[]> {
+    const regex = new RegExp(term, 'i');
+
+    // procura em title OU content
+    const docs = await this.postModel
+      .find({
+        $or: [{ title: { $regex: regex } }, { content: { $regex: regex } }],
+      })
+      .exec();
+
+    return docs.map((doc) => doc.toObject() as IPost);
   }
 }

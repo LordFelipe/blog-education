@@ -6,10 +6,12 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { SearchPostDto } from './dto/search-post';
 
 @Controller('posts')
 export class PostsController {
@@ -63,5 +65,14 @@ export class PostsController {
     return this.postsService.remove(id);
   }
 
-  //TODO : Criar endpoint para buscar posts por termo
+  //   GET /posts/search - Busca de Posts:
+  // ▪
+  // Este endpoint permitirá a busca de posts por palavras-
+  // chave. Os usuários poderão passar uma query string com o
+  // termo de busca e o sistema retornará uma lista de posts que
+  // contêm esse termo no título ou conteúdo.
+  @Get('search')
+  async search(@Query() dto: SearchPostDto) {
+    return this.postsService.search(dto.term);
+  }
 }

@@ -25,6 +25,9 @@ export class PostsService {
   update(id: string, updatePostDto: UpdatePostDto) {
     return this.postRepository.update(id, updatePostDto);
   }
+  search(term: string) {
+    return this.postRepository.search(term);
+  }
 
   remove(id: string) {
     return this.postRepository.remove(id);
