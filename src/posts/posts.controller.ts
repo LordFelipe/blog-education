@@ -7,11 +7,13 @@ import {
   Param,
   Delete,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { SearchPostDto } from './dto/search-post';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('posts')
 export class PostsController {
@@ -22,6 +24,7 @@ export class PostsController {
   // endpoint aceitará dados como título, conteúdo e autor no
   // corpo da requisição.
   @Post()
+  @UseGuards(AuthGuard)
   async create(@Body() createPostDto: CreatePostDto) {
     return this.postsService.create(createPostDto);
   }
@@ -30,6 +33,7 @@ export class PostsController {
   // postagens criadas, facilitando a gestão do conteúdo.
 
   @Get('all')
+  @UseGuards(AuthGuard)
   async findAll(limit: number, page: number) {
     return this.postsService.findAll(limit, page);
   }
@@ -54,6 +58,7 @@ export class PostsController {
   // deverão fornecer o ID do post que desejam editar e os novos
   // dados no corpo da requisição.
   @Patch(':id')
+  @UseGuards(AuthGuard)
   async update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
     return this.postsService.update(id, updatePostDto);
   }
@@ -61,6 +66,7 @@ export class PostsController {
   // ▪ Permite que docentes excluam uma postagem específica,
   // usando o ID do post como parâmetro
   @Delete(':id')
+  @UseGuards(AuthGuard)
   async remove(@Param('id') id: string) {
     return this.postsService.remove(id);
   }
