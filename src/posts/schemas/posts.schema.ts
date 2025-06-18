@@ -4,7 +4,7 @@ import mongoose, { HydratedDocument } from 'mongoose';
 
 export type PostDocument = HydratedDocument<Post>;
 
-@Schema({})
+@Schema()
 export class Post implements IPost {
   @Prop({ type: mongoose.Schema.Types.ObjectId })
   id?: string | undefined;
