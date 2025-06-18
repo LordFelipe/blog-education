@@ -18,6 +18,9 @@ export class UserMongooseRepository implements UserRepository {
   findOne(id: string): Promise<IUser | null> {
     return this.userModel.findById(id).exec();
   }
+  findByEmail(email: string): Promise<IUser | null> {
+    return this.userModel.findOne({ email }).exec();
+  }
   async update(id: string, user: UpdateUserDto): Promise<IUser | undefined> {
     const userData = await this.userModel
       .findByIdAndUpdate(id, user, { new: true })
