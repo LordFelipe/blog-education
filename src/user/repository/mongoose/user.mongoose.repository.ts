@@ -3,10 +3,12 @@ import { UserRepository } from '../user.repository';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from 'src/user/schemas/user.schema';
 import { Model } from 'mongoose';
+import { CreateUserDto } from 'src/user/dto/create-user.dto';
+import { UpdateUserDto } from 'src/user/dto/update-user.dto';
 
 export class UserMongooseRepository implements UserRepository {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
-  create(user: IUser): Promise<IUser> {
+  create(user: CreateUserDto): Promise<IUser> {
     const newUser = new this.userModel(user);
     return newUser.save();
   }
@@ -16,7 +18,7 @@ export class UserMongooseRepository implements UserRepository {
   findOne(id: string): Promise<IUser | null> {
     return this.userModel.findById(id).exec();
   }
-  async update(id: string, user: IUser): Promise<IUser | undefined> {
+  async update(id: string, user: UpdateUserDto): Promise<IUser | undefined> {
     const userData = await this.userModel
       .findByIdAndUpdate(id, user, { new: true })
       .exec();

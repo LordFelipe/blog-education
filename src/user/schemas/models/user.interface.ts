@@ -1,4 +1,7 @@
-export type UserRole = 'teacher' | 'student';
+export enum UserRole {
+  Student = 'student',
+  Teacher = 'teacher',
+}
 export interface IUser {
   id?: string;
   email: string;

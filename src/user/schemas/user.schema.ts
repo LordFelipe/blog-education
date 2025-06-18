@@ -1,6 +1,6 @@
 import mongoose, { HydratedDocument } from 'mongoose';
 import { IUser, UserRole } from './models/user.interface';
-import { Prop, Schema } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 export type UserDocument = HydratedDocument<User>;
 @Schema()
@@ -18,9 +18,11 @@ export class User implements IUser {
   @Prop({ default: true })
   isActive: boolean;
   @Prop({
-    type: mongoose.Schema.Types.String,
-    enum: ['teacher', 'student'],
-    default: 'student',
+    type: String,
+    enum: UserRole,
+    default: UserRole.Student,
   })
   role: UserRole;
 }
+
+export const UserSchema = SchemaFactory.createForClass(User);
