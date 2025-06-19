@@ -14,8 +14,12 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { SearchPostDto } from './dto/search-post';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { Roles } from 'src/decorators/roles';
+import { UserRole } from 'src/user/schemas/models/user.interface';
+import { RolesGuard } from 'src/auth/roles.guard';
 
 @Controller('posts')
+@UseGuards(RolesGuard)
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
@@ -24,7 +28,7 @@ export class PostsController {
   // endpoint aceitará dados como título, conteúdo e autor no
   // corpo da requisição.
   @Post()
-  @UseGuards(AuthGuard)
+  @Roles(UserRole.Teacher)
   async create(@Body() createPostDto: CreatePostDto) {
     return this.postsService.create(createPostDto);
   }
@@ -33,7 +37,7 @@ export class PostsController {
   // postagens criadas, facilitando a gestão do conteúdo.
 
   @Get('all')
-  @UseGuards(AuthGuard)
+  @Roles(UserRole.Teacher)
   async findAll(limit: number, page: number) {
     return this.postsService.findAll(limit, page);
   }
@@ -58,7 +62,7 @@ export class PostsController {
   // deverão fornecer o ID do post que desejam editar e os novos
   // dados no corpo da requisição.
   @Patch(':id')
-  @UseGuards(AuthGuard)
+  @Roles(UserRole.Teacher)
   async update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
     return this.postsService.update(id, updatePostDto);
   }
@@ -66,7 +70,7 @@ export class PostsController {
   // ▪ Permite que docentes excluam uma postagem específica,
   // usando o ID do post como parâmetro
   @Delete(':id')
-  @UseGuards(AuthGuard)
+  @Roles(UserRole.Teacher)
   async remove(@Param('id') id: string) {
     return this.postsService.remove(id);
   }

@@ -12,7 +12,7 @@ async function bootstrap() {
       stopAtFirstError: true,
     }),
   );
-  app.useGlobalFilters(new HttpExceptionFilter());
+  //app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalInterceptors(new LogginInterceptor());
   await app.listen(process.env.PORT ?? 3000);
 }

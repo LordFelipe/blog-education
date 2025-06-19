@@ -11,8 +11,6 @@ import { IUser, UserRole } from '../schemas/models/user.interface';
 import { Transform } from 'class-transformer';
 
 export class CreateUserDto {
-  id?: string | undefined;
-
   @IsOptional()
   @IsBoolean()
   isActive: boolean = true;
