@@ -1,15 +1,9 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IPost } from '../schemas/models/posts.interface';
 
-export class CreatePostDto {
-  @IsNotEmpty()
-  @IsString()
+export class CreatePostDto implements IPost {
+  description: string;
+  createdAt: Date;
   title: string;
-
-  @IsNotEmpty()
-  @IsString()
-  content: string;
-
-  @IsNotEmpty()
-  @IsString()
   image: string;
+  isPublished: boolean;
 }
