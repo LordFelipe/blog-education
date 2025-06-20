@@ -23,7 +23,7 @@ import { RolesGuard } from 'src/auth/roles.guard';
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
-  //   POST /posts - Criação de Postagens:
+  //   POST /posts - Criação de Postagens
   // ▪ Permite que docentes criem novas postagens. Este
   // endpoint aceitará dados como título, conteúdo e autor no
   // corpo da requisição.
