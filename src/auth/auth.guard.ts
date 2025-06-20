@@ -21,6 +21,7 @@ export class AuthGuard implements CanActivate {
       context.getHandler(),
       context.getClass(),
     ]);
+
     if (isPublic) {
       return true;
     }
@@ -36,7 +37,6 @@ export class AuthGuard implements CanActivate {
 
       request['user'] = payload;
     } catch (error) {
-      console.log(error);
       throw new UnauthorizedException();
     }
     return true;
