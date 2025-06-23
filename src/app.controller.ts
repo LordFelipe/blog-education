@@ -12,7 +12,7 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Get()
+  @Get('/docker')
   @IsPublic()
   getHelloDocker(): string {
     return 'Olá docker!';
