@@ -17,9 +17,11 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { Roles } from 'src/decorators/roles';
 import { UserRole } from 'src/user/schemas/models/user.interface';
 import { RolesGuard } from 'src/auth/roles.guard';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('posts')
 @UseGuards(RolesGuard)
+@ApiBearerAuth()
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
