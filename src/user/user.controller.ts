@@ -12,7 +12,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Roles } from '../decorators/roles';
 import { UserRole } from './schemas/models/user.interface';
-import { IsPublic } from 'src/decorators/is-public';
+import { IsPublic } from '../decorators/is-public';
 import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('user')
