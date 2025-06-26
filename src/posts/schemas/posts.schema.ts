@@ -1,23 +1,42 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { IPost } from './models/posts.interface';
-import mongoose, { HydratedDocument } from 'mongoose';
+import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
+import * as mongoose from 'mongoose';
 
-export type PostDocument = HydratedDocument<Post>;
+@Schema({
+  toObject: { virtuals: true },
+  toJSON: { virtuals: true },
+})
+export class Post {
+  @Prop({ type: String, unique: true })
+  id: string;
 
-@Schema()
-export class Post implements IPost {
-  @Prop({ type: mongoose.Schema.Types.ObjectId })
-  id?: string | undefined;
-  @Prop({ required: true, max: 130 })
-  title: string;
-  @Prop({ required: true, max: 200 })
-  description: string;
   @Prop({ required: true })
+  title: string;
+
+  @Prop({ required: true })
+  description: string;
+
+  @Prop()
   image: string;
-  @Prop({ default: Date.now() })
-  createdAt: Date;
-  @Prop({ required: true, default: false })
+
+  @Prop({ default: false })
   isPublished: boolean;
+
+  @Prop({ default: Date.now })
+  createdAt: Date;
 }
 
+export type PostDocument = Post & Document;
+
 export const PostSchema = SchemaFactory.createForClass(Post);
+
+PostSchema.pre<PostDocument>('save', function (next) {
+  if (!this.id) {
+    this.id = (this._id as mongoose.Types.ObjectId).toHexString();
+  }
+  next();
+});
+
+PostSchema.virtual('idVirtual').get(function (this: PostDocument) {
+  return (this._id as mongoose.Types.ObjectId).toHexString();
+});

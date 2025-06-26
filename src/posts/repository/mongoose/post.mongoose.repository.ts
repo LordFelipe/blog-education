@@ -1,15 +1,16 @@
 import { IPost } from 'src/posts/schemas/models/posts.interface';
 import { PostRepository } from '../post.repository';
 import { InjectModel } from '@nestjs/mongoose';
-import { Post } from 'src/posts/schemas/posts.schema';
+import { Post } from '../../schemas/posts.schema';
 import { Model } from 'mongoose';
 import { UpdatePostDto } from 'src/posts/dto/update-post.dto';
+import { CreatePostDto } from 'src/posts/dto/create-post.dto';
 
 export class PostMongooseRepository implements PostRepository {
   constructor(
     @InjectModel(Post.name) private readonly postModel: Model<Post>,
   ) {}
-  create(post: any): Promise<IPost> {
+  create(post: CreatePostDto): Promise<Post> {
     const newPost = new this.postModel(post);
     return newPost.save();
   }
@@ -33,13 +34,8 @@ export class PostMongooseRepository implements PostRepository {
     await this.postModel.deleteOne({ _id: id }).exec();
   }
   async search(term: string): Promise<IPost[]> {
-    const regex = new RegExp(term, 'i');
-
-    // procura em title OU content
     const docs = await this.postModel
-      .find({
-        $or: [{ title: { $regex: regex } }, { content: { $regex: regex } }],
-      })
+      .find({ $or: [{ title: term }, { description: term }] })
       .exec();
 
     return docs.map((doc) => doc.toObject() as IPost);
