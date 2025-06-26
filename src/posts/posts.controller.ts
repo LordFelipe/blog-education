@@ -13,10 +13,9 @@ import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { SearchPostDto } from './dto/search-post';
-import { AuthGuard } from 'src/auth/auth.guard';
-import { Roles } from 'src/decorators/roles';
-import { UserRole } from 'src/user/schemas/models/user.interface';
-import { RolesGuard } from 'src/auth/roles.guard';
+import { Roles } from '../decorators/roles';
+import { UserRole } from '../user/schemas/models/user.interface';
+import { RolesGuard } from '../auth/roles.guard';
 import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('posts')

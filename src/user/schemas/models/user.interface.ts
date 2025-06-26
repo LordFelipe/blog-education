@@ -3,7 +3,7 @@ export enum UserRole {
   Teacher = 'teacher',
 }
 export interface IUser {
-  id?: string;
+  id: string;
   email: string;
   name: string;
   password: string;
