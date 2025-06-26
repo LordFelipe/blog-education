@@ -23,7 +23,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
   //app.useGlobalFilters(new HttpExceptionFilter());
-  //app.useGlobalInterceptors(new LogginInterceptor());
-  await app.listen(process.env.PORT ?? 3002);
+  app.useGlobalInterceptors(new LogginInterceptor());
+  await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
