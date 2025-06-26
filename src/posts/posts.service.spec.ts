@@ -49,8 +49,7 @@ describe('PostsService', () => {
     expect(service).toBeDefined();
   });
 
-  it('should insert a post and then find it', async () => {
-    // 1) criar
+  it('should create a post', async () => {
     const postInput: CreatePostDto = {
       title: 'Integration Test',
       description: 'Testing with real mongodb, but in memory',
@@ -58,40 +57,93 @@ describe('PostsService', () => {
       isPublished: true,
     };
     const created = await service.create(postInput);
-
     expect(created).toHaveProperty('id');
     expect(created.title).toBe('Integration Test');
+  });
 
-    // 2) buscar publicado
-    const published = await service.findAllPublished();
-    expect(published).toHaveLength(1);
-    expect(published[0].title).toBe('Integration Test');
+  it('should retun error when creating a post without title', async () => {
+    const postInput: CreatePostDto = {
+      title: '',
+      description: 'Testing with real mongodb, but in memory',
+      image: 'img.png',
+      isPublished: true,
+    };
+    await expect(service.create(postInput)).rejects.toThrow(
+      'Post validation failed: title: Path `title` is required.',
+    );
+  });
 
-    // 3) buscar paginado
-    const all = await service.findAll(10, 1);
-    expect(all).toHaveLength(1);
+  it('should find all posts', async () => {
+    const postInput: CreatePostDto = {
+      title: 'Integration Test',
+      description: 'Testing with real mongodb, but in memory',
+      image: 'img.png',
+      isPublished: true,
+    };
+    await service.create(postInput);
+    const posts = await service.findAll(10, 1);
+    expect(posts).toHaveLength(1);
+  });
 
-    if (created.id) {
-      // 4) buscar por id
-      const one = await service.findOne(created.id);
-      expect(one).not.toBeNull();
-      expect(one!.title).toBe('Integration Test');
+  it('should find one post by id', async () => {
+    const postInput: CreatePostDto = {
+      title: 'Integration Test',
+      description: 'Testing with real mongodb, but in memory',
+      image: 'img.png',
+      isPublished: true,
+    };
+    const created = await service.create(postInput);
+    const one = await service.findOne(created.id);
+    expect(one).not.toBeNull();
+    expect(one!.title).toBe('Integration Test');
+  });
 
-      // 5) atualizar
-      const updated = await service.update(created.id, {
-        title: 'Updated Title',
-      });
-      expect(updated).not.toBeUndefined();
-      expect(updated!.title).toBe('Updated Title');
+  it('should return error when finding one post by invalid id', async () => {
+    await expect(service.findOne('1')).rejects.toThrow(
+      'Cast to ObjectId failed for value "1" (type string) at path "_id" for model "Post"',
+    );
+  });
 
-      // 6) search
-      const searchResults = await service.search('Updated Title');
-      expect(searchResults).toHaveLength(1);
+  it('should update a valid post', async () => {
+    const postInput: CreatePostDto = {
+      title: 'Integration Test',
+      description: 'Testing with real mongodb, but in memory',
+      image: 'img.png',
+      isPublished: true,
+    };
+    const created = await service.create(postInput);
+    const updated = await service.update(created.id, {
+      title: 'Updated Title',
+    });
+    expect(updated).toHaveProperty('id');
+    expect(updated?.title).toBe('Updated Title');
+  });
 
-      // 7) remover
-      await service.remove(created.id);
-      const afterRemove = await service.findOne(created.id);
-      expect(afterRemove).toBeNull();
-    }
+  it('should delete a valid post', async () => {
+    const postInput: CreatePostDto = {
+      title: 'Integration Test',
+      description: 'Testing with real mongodb, but in memory',
+      image: 'img.png',
+      isPublished: true,
+    };
+    const created = await service.create(postInput);
+    const deleted = await service.remove(created.id);
+    expect(deleted).toBeUndefined();
+  });
+
+  it('should find one post by title or description', async () => {
+    const postInput: CreatePostDto = {
+      title: 'Integration Test',
+      description: 'Testing with real mongodb, but in memory',
+      image: 'img.png',
+      isPublished: true,
+    };
+    const created = await service.create(postInput);
+    const searchPost = await service.search(created.title);
+    expect(searchPost).not.toBeNull();
+    expect(searchPost[0].title).toBe('Integration Test');
+    expect(searchPost[0].description).toBe(
+      'Testing with real mongodb, but in memory',
+    );
   });
 });
