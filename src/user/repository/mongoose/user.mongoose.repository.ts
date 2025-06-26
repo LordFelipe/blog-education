@@ -1,7 +1,7 @@
 import { IUser } from 'src/user/schemas/models/user.interface';
 import { UserRepository } from '../user.repository';
 import { InjectModel } from '@nestjs/mongoose';
-import { User } from 'src/user/schemas/user.schema';
+import { User } from '../../schemas/user.schema';
 import { Model } from 'mongoose';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { UpdateUserDto } from 'src/user/dto/update-user.dto';

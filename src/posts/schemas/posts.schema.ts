@@ -26,7 +26,7 @@ export class Post {
   createdAt: Date;
 }
 
-export type PostDocument = Post & Document;
+export type PostDocument = mongoose.HydratedDocument<Post & Document>;
 
 export const PostSchema = SchemaFactory.createForClass(Post);
 

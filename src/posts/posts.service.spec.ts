@@ -8,7 +8,7 @@ import { getModelToken, MongooseModule } from '@nestjs/mongoose';
 import { PostRepository } from './repository/post.repository';
 import { CreatePostDto } from './dto/create-post.dto';
 
-describe('PostsService', () => {
+describe('PostsService integration tests', () => {
   let module: TestingModule;
   let service: PostsService;
   let mongod: MongoMemoryServer;

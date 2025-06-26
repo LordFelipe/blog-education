@@ -6,12 +6,11 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Roles } from 'src/decorators/roles';
+import { Roles } from '../decorators/roles';
 import { UserRole } from './schemas/models/user.interface';
 import { IsPublic } from 'src/decorators/is-public';
 import { ApiBearerAuth } from '@nestjs/swagger';
