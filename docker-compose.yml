@@ -4,9 +4,9 @@ services:
   app:
     build: .
     container_name: app
-    # command: npm run start:dev
+    command: npm run start:dev
     ports:
-      - "3000:3000"
+      - '3000:3000'
     depends_on:
       - mongodb
     volumes:
@@ -15,12 +15,13 @@ services:
     environment:
       - MONGODB_URI=${MONGODB_URI}
       - JWT_SECRET=${JWT_SECRET}
+      - PORT=${PORT}
 
   mongodb:
     image: mongo:4.4
     container_name: mongodb
     ports:
-      - "27017:27017"
+      - '27017:27017'
     volumes:
       - mongo_data:/data/db
     environment:
@@ -32,7 +33,7 @@ services:
     container_name: mongo_express
     restart: always
     ports:
-      - "8081:8081"
+      - '8081:8081'
     depends_on:
       - mongodb
     environment:
