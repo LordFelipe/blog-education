@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
-import { UserModule } from '../user/user.module';
-import { JwtModule, JwtService } from '@nestjs/jwt';
+import { JwtModule } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { getModelToken, MongooseModule } from '@nestjs/mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
@@ -9,8 +8,6 @@ import { Model } from 'mongoose';
 import { User, UserDocument, UserSchema } from '../user/schemas/user.schema';
 import { UserRepository } from '../user/repository/user.repository';
 import { UserMongooseRepository } from '../user/repository/mongoose/user.mongoose.repository';
-import { AuthGuard } from './auth.guard';
-import { AuthController } from './auth.controller';
 import { UserRole } from '../user/schemas/models/user.interface';
 import { LoginDto } from './dto/login.dto';
 

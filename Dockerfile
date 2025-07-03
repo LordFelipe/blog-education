@@ -11,5 +11,5 @@ RUN npm i -g pnpm
 RUN pnpm build
 
 EXPOSE 3000
-
-CMD ["node", "dist/main"]
+RUN npm install -g nodemon
+CMD ["nodemon", "dist/main"]
